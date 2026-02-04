@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +11,8 @@
 
   <style>
     :root {
-      --sage: #96AE97;
-      --sage-dark: #7a9a7b;
+      --sage: #D4B896;
+      --sage-dark: #C9A876;
       --text: #ffffff;
       --ink: #222;
     }
@@ -24,20 +25,21 @@
       color: var(--ink);
       scroll-behavior: smooth;
       display: flex;
-      height: 100vh;
-      overflow: hidden;
+      flex-direction: column;
+      height: auto;
+      overflow: auto;
     }
 
     .pane-left {
-      width: 60%;
+      width: 100%;
       overflow-y: auto;
       overflow-x: hidden;
     }
 
     .pane-right {
+      display: none;
       width: 40%;
       overflow: hidden;
-      display: flex;
       align-items: center;
       justify-content: center;
       background: url("https://rsvpify-v3.s3.amazonaws.com/events/291/form/images/1580/background.png?id=860904658285") center/cover fixed;
@@ -118,6 +120,37 @@
       color: var(--sage);
     }
 
+    /* ---------------- SPLASH SCREEN ---------------- */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #F6EADA;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .splash-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .splash-screen video {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      object-position: center;
+      clip-path: inset(15% 0);
+    }
+
     /* ---------------- HERO ---------------- */
     .hero {
       height: 100vh;
@@ -160,22 +193,79 @@
     section {
       padding: 100px 20px;
       text-align: center;
+      background: white;
+      color: #222;
     }
 
     .sage {
-      background: var(--sage);
-      color: white;
+      background: white;
+      color: #222;
+    }
+
+    .sage h2 {
+      background: 
+        url("./images/Colourfu-leaves-and-flowers.png") center/cover no-repeat,
+        var(--sage);
+      background-attachment: fixed;
+      color: #FFFFFF;
+      padding: 40px 20px;
+      margin: -100px -20px 30px -20px;
+      font-family: 'Lobster Two', cursive;
+      font-size: 38px;
+      position: relative;
+      z-index: 2;
+      font-weight: 900;
+      text-shadow: 
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        2px 2px 0 #000,
+        -2px 0 0 #000,
+        2px 0 0 #000,
+        0 -2px 0 #000,
+        0 2px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000,
+        3px 3px 6px rgba(0, 0, 0, 0.7);
+      letter-spacing: 1px;
+    }
+
+    .sage h2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(212, 184, 150, 0.65);
+      z-index: 0;
+    }
+
+    .sage h2::after {
+      content: attr(data-text);
+      position: relative;
+      z-index: 2;
     }
 
     section h2 {
       font-family: 'Lobster Two', cursive;
       font-size: 42px;
       margin-bottom: 10px;
+      color: #222;
     }
 
     .date {
       opacity: 0.85;
       margin-bottom: 30px;
+      font-weight: 700;
+      color: #5C4033;
+    }
+
+    .sage p {
+      font-weight: 700;
+      color: #5C4033;
     }
 
     section p {
@@ -183,6 +273,7 @@
       margin: auto;
       line-height: 1.8;
       font-size: 16px;
+      font-weight: 600;
     }
 
     /* ---------------- RSVP ---------------- */
@@ -222,6 +313,17 @@
     }
 
     @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        height: auto;
+      }
+      .pane-left {
+        width: 100%;
+        overflow-y: auto;
+      }
+      .pane-right {
+        display: none;
+      }
       .hero h1 { font-size: 44px; }
       section { padding: 70px 20px; }
     }
@@ -230,6 +332,12 @@
 
 <body>
 
+  <!-- SPLASH SCREEN -->
+  <div class="splash-screen" id="splashScreen">
+    <video autoplay muted playsinline style="max-width: 80%; max-height: 80%; object-fit: contain;">
+      <source src="./images/Animation-entry.mp4" type="video/mp4">
+    </video>
+  </div>
   <!-- NAV -->
   <div class="nav-toggle" onclick="toggleNav()">☰</div>
 
@@ -252,16 +360,10 @@
     <!-- HERO -->
     <section class="hero">
       <div>
-        <h1>Ni x Ni</h1>
-        <p>DECEMBER 12, 2026</p>
+        <h1>Niyeti & Niyeti</h1>
+        <p>December 15-17, 2024 • Goa, India</p>
       </div>
       <div class="scroll">SCROLL DOWN</div>
-    </section>
-
-    <!-- COUPLE NAMES -->
-    <section id="couple">
-      <h2>Niyeti & Nikhil</h2>
-      <p>Together since 2015</p>
     </section>
 
     <!-- HOW WE MET -->
@@ -274,7 +376,7 @@
     </section>
 
     <!-- PROPOSAL -->
-    <section id="proposal">
+    <section id="proposal" class="sage">
       <h2>The Proposal</h2>
       <div class="date">06.24.2020</div>
       <p>
@@ -283,47 +385,42 @@
       </p>
     </section>
 
-    <!-- WEDDING HASHTAG -->
-    <section id="hashtag" class="sage">
-      <h2>#NiXNi2026</h2>
-    </section>
-
     <!-- SCHEDULE -->
-    <section id="schedule">
+    <section id="schedule" class="sage">
       <h2>Schedule of Events</h2>
 
       <div style="max-width: 700px; margin: auto; text-align: left;">
 
         <div style="margin-bottom: 50px;">
-          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #96AE97;">December 15 • 2:00 PM</h3>
-          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #96AE97;">✨ Check-in at the Resort</p>
-          <p style="text-align: left; opacity: 0.95; margin-bottom: 15px; color: #96AE97;">
+          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #8B6838;">December 15 • 2:00 PM</h3>
+          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #8B6838;">✨ Check-in at the Resort</p>
+          <p style="text-align: left; opacity: 0.95; margin-bottom: 15px; color: #8B6838;">
             Nanu Beach Resort & Spa<br>
             Betalbatim, Goa<br>
-            <a href="#" style="color: #96AE97; text-decoration: underline;">Visit Hotel Website</a>
+            <a href="#" style="color: #8B6838; text-decoration: underline;">Visit Hotel Website</a>
           </p>
-          <p style="text-align: left; font-weight: 600; margin-top: 20px; color: #96AE97;">🎉 Evening: Haldi & Devgon</p>
-          <p style="text-align: left; opacity: 0.95; color: #96AE97;">
+          <p style="text-align: left; font-weight: 600; margin-top: 20px; color: #8B6838;">🎉 Evening: Haldi & Devgon</p>
+          <p style="text-align: left; opacity: 0.95; color: #8B6838;">
             Followed by music, games and dinner
           </p>
         </div>
 
         <div style="margin-bottom: 50px; border-top: 2px solid rgba(150,174,151,0.3); padding-top: 50px;">
-          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #96AE97;">December 16</h3>
-          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #96AE97;">💍 9:00 AM - Wedding Ceremony</p>
-          <p style="text-align: left; opacity: 0.95; margin-bottom: 30px; color: #96AE97;">
+          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #8B6838;">December 16</h3>
+          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #8B6838;">💍 9:00 AM - Wedding Ceremony</p>
+          <p style="text-align: left; opacity: 0.95; margin-bottom: 30px; color: #8B6838;">
             The big moment we've been waiting for!
           </p>
-          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #96AE97;">🍹 6:00 PM - Cocktail Party</p>
-          <p style="text-align: left; opacity: 0.95; color: #96AE97;">
+          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #8B6838;">🍹 6:00 PM - Cocktail Party</p>
+          <p style="text-align: left; opacity: 0.95; color: #8B6838;">
             Dinner, drinks & dancing to follow!
           </p>
         </div>
 
         <div style="border-top: 2px solid rgba(150,174,151,0.3); padding-top: 50px;">
-          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #96AE97;">December 17 • 11:00 AM</h3>
-          <p style="text-align: left; font-weight: 600; color: #96AE97;">🌅 Check-out from Resort</p>
-          <p style="text-align: left; opacity: 0.95; margin-top: 10px; color: #96AE97;">
+          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #8B6838;">December 17 • 11:00 AM</h3>
+          <p style="text-align: left; font-weight: 600; color: #8B6838;">🌅 Check-out from Resort</p>
+          <p style="text-align: left; opacity: 0.95; margin-top: 10px; color: #8B6838;">
             Until we meet again!
           </p>
         </div>
@@ -341,7 +438,7 @@
     </section>
 
     <!-- ACCOMMODATIONS -->
-    <section id="accommodations">
+    <section id="accommodations" class="sage">
       <h2>Accommodations</h2>
       <p>
         Special room rates available at partner hotels. Details coming soon.
@@ -357,7 +454,7 @@
     </section>
 
     <!-- WEDDING PARTY -->
-    <section id="party">
+    <section id="party" class="sage">
       <h2>Wedding Party</h2>
       <p>
         Meet our wonderful wedding party members.
@@ -372,19 +469,36 @@
       </p>
     </section>
 
+    <!-- RSVP (Mobile) -->
+    <section id="rsvp" class="sage">
+      <h2>RSVP</h2>
+      <div class="rsvp-box">
+        <form name="submit-to-google-sheet">
+          <input name="Name" placeholder="Your Name" required />
+          <input name="Email" type="email" placeholder="Your Email" required />
+          <select name="Attending" required>
+            <option value="">Will you attend?</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+          <button type="submit">Confirm</button>
+        </form>
+      </div>
+    </section>
+
     <footer>
       Made with love • Ni & Ni
     </footer>
   </div>
 
-  <!-- RIGHT PANE (FIXED) -->
+  <!-- RIGHT PANE (FIXED DESKTOP ONLY) -->
   <div class="pane-right">
     <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
       <!-- LOGO -->
       <img src="./images/img1.jpeg" alt="logo" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
 
-      <!-- RSVP -->
-      <section id="rsvp" class="sage">
+      <!-- RSVP (Desktop) -->
+      <section id="rsvp-desktop" class="sage">
         <h2>RSVP</h2>
         <div class="rsvp-box">
           <form name="submit-to-google-sheet">
@@ -404,6 +518,14 @@
 
 
   <script>
+    // Hide splash screen after 2 seconds
+    setTimeout(() => {
+      const splashScreen = document.getElementById('splashScreen');
+      if (splashScreen) {
+        splashScreen.classList.add('hidden');
+      }
+    }, 2000);
+
     const nav = document.getElementById('nav');
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelectorAll('.nav a');
