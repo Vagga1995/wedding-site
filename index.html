@@ -511,9 +511,10 @@
 
   <!-- SPLASH SCREEN -->
   <div class="splash-screen" id="splashScreen">
-    <video autoplay loop muted playsinline webkit-playsinline preload="auto" style="max-width: 80%; max-height: 80%; object-fit: contain;">
+    <video id="splashVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" style="max-width: 80%; max-height: 80%; object-fit: contain;">
       <source src="./images/Animation-entry.mp4" type="video/mp4">
     </video>
+    <img id="splashFallback" src="./images/Website-entry-page.gif" alt="Welcome animation" style="display: none; max-width: 80%; max-height: 80%; object-fit: contain;">
   </div>
   <!-- NAV -->
   <div class="nav-toggle" onclick="toggleNav()">☰</div>
@@ -711,12 +712,18 @@
     }, 2000);
 
     // iOS Safari: best-effort autoplay for inline muted video
-    const splashVideo = document.querySelector('#splashScreen video');
+    const splashVideo = document.getElementById('splashVideo');
+    const splashFallback = document.getElementById('splashFallback');
     if (splashVideo) {
       const tryPlay = () => {
         const playPromise = splashVideo.play();
         if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {});
+          playPromise.catch(() => {
+            if (splashFallback) {
+              splashVideo.style.display = 'none';
+              splashFallback.style.display = 'block';
+            }
+          });
         }
       };
       tryPlay();
