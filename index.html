@@ -102,9 +102,9 @@
       color: #fff;
       border: none;
       border-radius: 999px;
-      padding: 12px 18px;
+      padding: 14px 22px;
       font-family: 'Lobster Two', cursive;
-      font-size: 16px;
+      font-size: 18px;
       letter-spacing: 0.5px;
       cursor: pointer;
       box-shadow: 0 8px 24px rgba(0,0,0,0.18);
@@ -204,6 +204,15 @@
     @keyframes cardOut {
       from { transform: translateY(0); opacity: 1; }
       to { transform: translateY(-6px); opacity: 0; }
+    }
+
+    .rsvp-fab.pulse {
+      animation: rsvpPulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes rsvpPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+      50% { transform: scale(1.05); box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
     }
     .nav {
       position: fixed;
@@ -459,8 +468,8 @@
       .rsvp-fab {
         top: 14px;
         right: 14px;
-        padding: 10px 14px;
-        font-size: 14px;
+        padding: 12px 16px;
+        font-size: 16px;
       }
     }
 
@@ -823,11 +832,28 @@
       });
     }
 
-    rsvpFab.addEventListener('click', openRsvp);
+    rsvpFab.addEventListener('click', () => {
+      rsvpFab.classList.remove('pulse');
+      openRsvp();
+    });
     rsvpClose.addEventListener('click', closeRsvp);
     rsvpModal.addEventListener('click', (e) => {
       if (e.target === rsvpModal) closeRsvp();
     });
+
+    // Pulse RSVP button until user starts scrolling
+    if (rsvpFab) {
+      rsvpFab.classList.add('pulse');
+      const stopPulse = () => {
+        rsvpFab.classList.remove('pulse');
+        window.removeEventListener('scroll', stopPulse);
+      };
+      if (window.scrollY > 0) {
+        rsvpFab.classList.remove('pulse');
+      } else {
+        window.addEventListener('scroll', stopPulse, { passive: true });
+      }
+    }
   </script>
 
 </body>
