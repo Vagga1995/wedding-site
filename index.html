@@ -102,9 +102,9 @@
       color: #fff;
       border: none;
       border-radius: 999px;
-      padding: 14px 22px;
+      padding: 18px 28px;
       font-family: 'Lobster Two', cursive;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: 0.5px;
       cursor: pointer;
       box-shadow: 0 8px 24px rgba(0,0,0,0.18);
@@ -210,9 +210,25 @@
       animation: rsvpPulse 1.6s ease-in-out infinite;
     }
 
+    .rsvp-fab.pulse::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 248, 230, 0.9);
+      box-shadow: 0 0 0 0 rgba(255, 248, 230, 0.65);
+      animation: rsvpGlow 1.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
     @keyframes rsvpPulse {
       0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
       50% { transform: scale(1.05); box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
+    }
+
+    @keyframes rsvpGlow {
+      0%, 100% { opacity: 0.3; box-shadow: 0 0 0 0 rgba(255, 248, 230, 0.0); }
+      50% { opacity: 1; box-shadow: 0 0 18px 6px rgba(255, 248, 230, 0.6); }
     }
     .nav {
       position: fixed;
@@ -468,8 +484,8 @@
       .rsvp-fab {
         top: 14px;
         right: 14px;
-        padding: 12px 16px;
-        font-size: 16px;
+        padding: 16px 20px;
+        font-size: 18px;
       }
     }
 
