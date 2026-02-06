@@ -166,7 +166,7 @@
       margin-bottom: 14px;
     }
 
-    .rsvp-card button {
+    .rsvp-card button:not(.rsvp-close) {
       width: 100%;
       padding: 12px 14px;
       border: none;
@@ -187,6 +187,9 @@
       font-size: 18px;
       cursor: pointer;
       color: #666;
+      width: auto;
+      padding: 6px;
+      box-shadow: none;
     }
 
     .rsvp-fade-out {
@@ -717,6 +720,7 @@
       email: '',
       attending: ''
     };
+    const rsvpEndpoint = 'https://script.google.com/macros/s/AKfycbx9cbevZyqf368wxbH5zTE-ywxcL7tZxmpLoSpD63vzfArq-Rg8NusXT2z41n59n-GL/exec';
 
     const steps = [
       {
@@ -783,11 +787,37 @@
             renderStep();
           } else {
             rsvpStep.innerHTML = `
-              <h3>Thank you!</h3>
-              <p>Your response has been recorded.</p>
-              <button type="button" id="rsvpDone">Close</button>
+              <h3>Submitting...</h3>
+              <p>Please wait a moment.</p>
             `;
-            document.getElementById('rsvpDone').addEventListener('click', closeRsvp);
+
+            const formBody = new URLSearchParams({
+              Name: rsvpData.name,
+              Email: rsvpData.email,
+              Attending: rsvpData.attending
+            });
+
+            fetch(rsvpEndpoint, {
+              method: 'POST',
+              body: formBody
+            }).then(() => {
+              rsvpStep.innerHTML = `
+                <h3>Thank you!</h3>
+                <p>Your response has been recorded.</p>
+                <button type="button" id="rsvpDone">Close</button>
+              `;
+              document.getElementById('rsvpDone').addEventListener('click', closeRsvp);
+            }).catch(() => {
+              rsvpStep.innerHTML = `
+                <h3>Something went wrong</h3>
+                <p>Please try again.</p>
+                <button type="button" id="rsvpRetry">Retry</button>
+              `;
+              document.getElementById('rsvpRetry').addEventListener('click', () => {
+                stepIndex = steps.length - 1;
+                renderStep();
+              });
+            });
           }
         }, 200);
       });
