@@ -93,6 +93,115 @@
       color: var(--ink);
     }
 
+    .rsvp-fab {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 1002;
+      background: var(--sage);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-family: 'Lobster Two', cursive;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    .rsvp-fab:active {
+      transform: translateY(1px);
+    }
+
+    .rsvp-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .rsvp-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .rsvp-card {
+      width: min(90vw, 420px);
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+      text-align: left;
+      position: relative;
+      animation: cardIn 0.25s ease;
+    }
+
+    .rsvp-card h3 {
+      font-family: 'Lobster Two', cursive;
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #5C4033;
+    }
+
+    .rsvp-card p {
+      margin-bottom: 14px;
+      color: #444;
+      font-weight: 600;
+    }
+
+    .rsvp-card input,
+    .rsvp-card select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-bottom: 14px;
+    }
+
+    .rsvp-card button {
+      width: 100%;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--sage-dark);
+      color: #fff;
+      font-family: 'Lobster Two', cursive;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .rsvp-close {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .rsvp-fade-out {
+      animation: cardOut 0.2s ease forwards;
+    }
+
+    @keyframes cardIn {
+      from { transform: translateY(8px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes cardOut {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-6px); opacity: 0; }
+    }
     .nav {
       position: fixed;
       left: 0;
@@ -344,6 +453,12 @@
         margin: 16px 0;
         white-space: normal;
       }
+      .rsvp-fab {
+        top: 14px;
+        right: 14px;
+        padding: 10px 14px;
+        font-size: 14px;
+      }
     }
 
     @supports (height: 100svh) {
@@ -373,6 +488,7 @@
   </div>
   <!-- NAV -->
   <div class="nav-toggle" onclick="toggleNav()">☰</div>
+  <button class="rsvp-fab" id="rsvpFab" type="button">RSVP</button>
 
   <nav class="nav" id="nav">
     <a href="#couple">Couple Names</a>
@@ -502,22 +618,7 @@
       </p>
     </section>
 
-    <!-- RSVP (Mobile) -->
-    <section id="rsvp" class="sage">
-      <h2>RSVP</h2>
-      <div class="rsvp-box">
-        <form name="submit-to-google-sheet">
-          <input name="Name" placeholder="Your Name" required />
-          <input name="Email" type="email" placeholder="Your Email" required />
-          <select name="Attending" required>
-            <option value="">Will you attend?</option>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-          <button type="submit">Confirm</button>
-        </form>
-      </div>
-    </section>
+    <!-- RSVP section removed in favor of floating button + modal -->
 
     <footer>
       Made with love • Ni & Ni
@@ -546,6 +647,14 @@
           </form>
         </div>
       </section>
+    </div>
+  </div>
+
+  <!-- RSVP Modal -->
+  <div class="rsvp-modal" id="rsvpModal" aria-hidden="true">
+    <div class="rsvp-card" id="rsvpCard" role="dialog" aria-modal="true">
+      <button class="rsvp-close" id="rsvpClose" type="button">✕</button>
+      <div id="rsvpStep"></div>
     </div>
   </div>
 
@@ -594,6 +703,100 @@
       if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
         closeNav();
       }
+    });
+
+    // RSVP modal stepper
+    const rsvpFab = document.getElementById('rsvpFab');
+    const rsvpModal = document.getElementById('rsvpModal');
+    const rsvpClose = document.getElementById('rsvpClose');
+    const rsvpStep = document.getElementById('rsvpStep');
+    const rsvpCard = document.getElementById('rsvpCard');
+
+    const rsvpData = {
+      name: '',
+      email: '',
+      attending: ''
+    };
+
+    const steps = [
+      {
+        title: 'RSVP',
+        text: 'What is your full name?',
+        input: '<input id="rsvpName" name="Name" placeholder="Your Name" required />'
+      },
+      {
+        title: 'RSVP',
+        text: 'What is your email?',
+        input: '<input id="rsvpEmail" name="Email" type="email" placeholder="Your Email" required />'
+      },
+      {
+        title: 'RSVP',
+        text: 'Will you attend?',
+        input: `<select id="rsvpAttend" name="Attending" required>
+                  <option value="">Select one</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>`
+      }
+    ];
+
+    let stepIndex = 0;
+
+    function openRsvp() {
+      stepIndex = 0;
+      rsvpModal.classList.add('open');
+      rsvpModal.setAttribute('aria-hidden', 'false');
+      renderStep();
+    }
+
+    function closeRsvp() {
+      rsvpModal.classList.remove('open');
+      rsvpModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function renderStep() {
+      const step = steps[stepIndex];
+      rsvpStep.innerHTML = `
+        <h3>${step.title}</h3>
+        <p>${step.text}</p>
+        ${step.input}
+        <button type="button" id="rsvpNext">${stepIndex < steps.length - 1 ? 'Next' : 'Submit'}</button>
+      `;
+
+      const nextBtn = document.getElementById('rsvpNext');
+      nextBtn.addEventListener('click', () => {
+        const inputEl = rsvpStep.querySelector('input, select');
+        if (!inputEl || !inputEl.value) {
+          inputEl && inputEl.focus();
+          return;
+        }
+
+        if (inputEl.id === 'rsvpName') rsvpData.name = inputEl.value.trim();
+        if (inputEl.id === 'rsvpEmail') rsvpData.email = inputEl.value.trim();
+        if (inputEl.id === 'rsvpAttend') rsvpData.attending = inputEl.value;
+
+        rsvpCard.classList.add('rsvp-fade-out');
+        setTimeout(() => {
+          rsvpCard.classList.remove('rsvp-fade-out');
+          stepIndex += 1;
+          if (stepIndex < steps.length) {
+            renderStep();
+          } else {
+            rsvpStep.innerHTML = `
+              <h3>Thank you!</h3>
+              <p>Your response has been recorded.</p>
+              <button type="button" id="rsvpDone">Close</button>
+            `;
+            document.getElementById('rsvpDone').addEventListener('click', closeRsvp);
+          }
+        }, 200);
+      });
+    }
+
+    rsvpFab.addEventListener('click', openRsvp);
+    rsvpClose.addEventListener('click', closeRsvp);
+    rsvpModal.addEventListener('click', (e) => {
+      if (e.target === rsvpModal) closeRsvp();
     });
   </script>
 
