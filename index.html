@@ -367,7 +367,7 @@
 
   <!-- SPLASH SCREEN -->
   <div class="splash-screen" id="splashScreen">
-    <video autoplay loop muted playsinline webkit-playsinline style="max-width: 80%; max-height: 80%; object-fit: contain;">
+    <video autoplay loop muted playsinline webkit-playsinline preload="auto" style="max-width: 80%; max-height: 80%; object-fit: contain;">
       <source src="./images/Animation-entry.mp4" type="video/mp4">
     </video>
   </div>
@@ -558,6 +558,19 @@
         splashScreen.classList.add('hidden');
       }
     }, 2000);
+
+    // iOS Safari: best-effort autoplay for inline muted video
+    const splashVideo = document.querySelector('#splashScreen video');
+    if (splashVideo) {
+      const tryPlay = () => {
+        const playPromise = splashVideo.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      };
+      tryPlay();
+      document.addEventListener('touchend', tryPlay, { once: true });
+    }
 
     const nav = document.getElementById('nav');
     const navToggle = document.querySelector('.nav-toggle');
