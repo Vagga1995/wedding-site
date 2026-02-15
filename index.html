@@ -159,13 +159,42 @@
     }
 
     .rsvp-card input,
-    .rsvp-card select {
+    .rsvp-card select,
+    .rsvp-card textarea {
       width: 100%;
       padding: 12px 14px;
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 15px;
       margin-bottom: 14px;
+    }
+
+    .rsvp-card textarea {
+      min-height: 96px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .rsvp-options {
+      display: grid;
+      gap: 10px;
+      margin: 6px 0 14px;
+    }
+
+    .rsvp-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #444;
+      font-weight: 600;
+    }
+
+    .rsvp-option input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--sage-dark);
+      cursor: pointer;
     }
 
     .rsvp-card button:not(.rsvp-close) {
@@ -277,15 +306,18 @@
       justify-content: center;
       z-index: 9999;
       opacity: 1;
-      transition: opacity 0.5s ease-out;
+      visibility: visible;
+      transition: opacity 0.9s ease-out, visibility 0.9s ease-out;
     }
 
     .splash-screen.hidden {
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
     }
 
-    .splash-screen video {
+    .splash-screen video,
+    .splash-screen img {
       width: auto;
       height: auto;
       max-width: 100%;
@@ -293,6 +325,22 @@
       object-fit: cover;
       object-position: center;
       clip-path: inset(15% 0);
+      opacity: 1;
+      transition: opacity 0.7s ease-out;
+    }
+
+    .splash-screen.fade-media video,
+    .splash-screen.fade-media img {
+      opacity: 0;
+    }
+
+    .site-content {
+      opacity: 0;
+      transition: opacity 0.8s ease-in;
+    }
+
+    .site-content.visible {
+      opacity: 1;
     }
 
     /* ---------------- HERO ---------------- */
@@ -520,6 +568,8 @@
     </video>
     <img id="splashFallback" src="./images/Website-entry-page.gif" alt="Welcome animation" style="display: none; max-width: 80%; max-height: 80%; object-fit: cover; clip-path: inset(8% 0);">
   </div>
+
+  <div id="mainContent" class="site-content">
   <!-- NAV -->
   <div class="nav-toggle" onclick="toggleNav()">☰</div>
   <button class="rsvp-fab" id="rsvpFab" type="button">RSVP</button>
@@ -683,13 +733,19 @@
         <h2>RSVP</h2>
         <div class="rsvp-box">
           <form name="submit-to-google-sheet">
-            <input name="Name" placeholder="Your Name" required />
-            <input name="Email" type="email" placeholder="Your Email" required />
-            <select name="Attending" required>
-              <option value="">Will you attend?</option>
+            <input name="Name" placeholder="Full name" required />
+            <select name="MealPreference" required>
+              <option value="">Meal preference</option>
+              <option>Veg</option>
+              <option>Non-Veg</option>
+            </select>
+            <select name="Alcohol" required>
+              <option value="">Would you like alcohol?</option>
               <option>Yes</option>
               <option>No</option>
             </select>
+            <input name="SongRequest" placeholder="Song request" required />
+            <input name="Note" placeholder="Note for the couple (optional)" />
             <button type="submit">Confirm</button>
           </form>
         </div>
@@ -704,16 +760,29 @@
       <div id="rsvpStep"></div>
     </div>
   </div>
+  </div>
 
 
   <script>
-    // Hide splash screen after 2 seconds
-    setTimeout(() => {
-      const splashScreen = document.getElementById('splashScreen');
-      if (splashScreen) {
+    // Fade out splash media and fade in website content
+    const splashScreen = document.getElementById('splashScreen');
+    const mainContent = document.getElementById('mainContent');
+    const splashDuration = 2200;
+    const mediaFadeLead = 700;
+    if (splashScreen) {
+      setTimeout(() => {
+        splashScreen.classList.add('fade-media');
+      }, Math.max(0, splashDuration - mediaFadeLead));
+
+      setTimeout(() => {
         splashScreen.classList.add('hidden');
-      }
-    }, 2000);
+        if (mainContent) {
+          mainContent.classList.add('visible');
+        }
+      }, splashDuration);
+    } else if (mainContent) {
+      mainContent.classList.add('visible');
+    }
 
     // iOS Safari: best-effort autoplay for inline muted video
     const splashVideo = document.getElementById('splashVideo');
@@ -767,30 +836,115 @@
 
     const rsvpData = {
       name: '',
-      email: '',
-      attending: ''
+      mealPreference: '',
+      alcohol: '',
+      songRequest: '',
+      note: ''
     };
     const rsvpEndpoint = 'https://script.google.com/macros/s/AKfycbx9cbevZyqf368wxbH5zTE-ywxcL7tZxmpLoSpD63vzfArq-Rg8NusXT2z41n59n-GL/exec';
+    const desktopRsvpForm = document.forms['submit-to-google-sheet'];
+
+    function buildRsvpPayload(data) {
+      return {
+        Name: data.name || '',
+        MealPreference: data.mealPreference || '',
+        Alcohol: data.alcohol || '',
+        SongRequest: data.songRequest || '',
+        Note: data.note || '',
+        // Backward-compatibility keys in case Apps Script still maps old columns
+        Email: data.mealPreference || 'N/A',
+        Attending: data.alcohol || 'N/A',
+        // Alternate labels if script maps by human-readable headers
+        'Meal Preference': data.mealPreference || '',
+        'Would you like to drink alcohol': data.alcohol || '',
+        'Song Request': data.songRequest || '',
+        'Note for Couple': data.note || ''
+      };
+    }
+
+    async function submitRsvpData(data) {
+      const payload = buildRsvpPayload(data);
+      const formBody = new URLSearchParams(payload);
+      // Apps Script web apps are most reliable cross-origin with no-cors form-style POST.
+      await fetch(rsvpEndpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+    }
 
     const steps = [
       {
         title: 'RSVP',
-        text: 'What is your full name?',
-        input: '<input id="rsvpName" name="Name" placeholder="Your Name" required />'
+        text: '1. Full name:',
+        input: '<input id="rsvpName" name="Name" placeholder="Your full name" required />',
+        getValue: () => {
+          const input = document.getElementById('rsvpName');
+          return input && input.value.trim() ? input.value.trim() : null;
+        },
+        setValue: (value) => { rsvpData.name = value; }
       },
       {
         title: 'RSVP',
-        text: 'What is your email?',
-        input: '<input id="rsvpEmail" name="Email" type="email" placeholder="Your Email" required />'
+        text: '2. Meal preference:',
+        input: `<div class="rsvp-options" role="group" aria-label="Meal preference">
+                  <label class="rsvp-option">
+                    <input type="checkbox" name="MealPreference" value="Veg" />
+                    <span>Veg</span>
+                  </label>
+                  <label class="rsvp-option">
+                    <input type="checkbox" name="MealPreference" value="Non-Veg" />
+                    <span>Non-Veg</span>
+                  </label>
+                </div>`,
+        getValue: () => {
+          const selected = rsvpStep.querySelector('input[name="MealPreference"]:checked');
+          return selected ? selected.value : null;
+        },
+        setValue: (value) => { rsvpData.mealPreference = value; }
       },
       {
         title: 'RSVP',
-        text: 'Will you attend?',
-        input: `<select id="rsvpAttend" name="Attending" required>
-                  <option value="">Select one</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>`
+        text: '3. Would you like to drink alcohol?:',
+        input: `<div class="rsvp-options" role="group" aria-label="Alcohol preference">
+                  <label class="rsvp-option">
+                    <input type="checkbox" name="Alcohol" value="Yes" />
+                    <span>Yes</span>
+                  </label>
+                  <label class="rsvp-option">
+                    <input type="checkbox" name="Alcohol" value="No" />
+                    <span>No</span>
+                  </label>
+                </div>`,
+        getValue: () => {
+          const selected = rsvpStep.querySelector('input[name="Alcohol"]:checked');
+          return selected ? selected.value : null;
+        },
+        setValue: (value) => { rsvpData.alcohol = value; }
+      },
+      {
+        title: 'RSVP',
+        text: '4. Which song will get you out on the dance floor? - leave your song request.',
+        input: '<input id="rsvpSong" name="SongRequest" placeholder="Song request" required />',
+        getValue: () => {
+          const input = document.getElementById('rsvpSong');
+          return input && input.value.trim() ? input.value.trim() : null;
+        },
+        setValue: (value) => { rsvpData.songRequest = value; }
+      },
+      {
+        title: 'RSVP',
+        text: '5. Leave a note for the couple (optional):',
+        input: '<textarea id="rsvpNote" name="Note" placeholder="Your note (optional)"></textarea>',
+        getValue: () => {
+          const input = document.getElementById('rsvpNote');
+          return input ? input.value.trim() : '';
+        },
+        setValue: (value) => { rsvpData.note = value; },
+        optional: true
       }
     ];
 
@@ -817,17 +971,29 @@
         <button type="button" id="rsvpNext">${stepIndex < steps.length - 1 ? 'Next' : 'Submit'}</button>
       `;
 
+      ['MealPreference', 'Alcohol'].forEach((groupName) => {
+        const options = rsvpStep.querySelectorAll(`input[name="${groupName}"]`);
+        if (options.length > 1) {
+          options.forEach((option) => {
+            option.addEventListener('change', () => {
+              if (!option.checked) return;
+              options.forEach((other) => {
+                if (other !== option) other.checked = false;
+              });
+            });
+          });
+        }
+      });
+
       const nextBtn = document.getElementById('rsvpNext');
       nextBtn.addEventListener('click', () => {
-        const inputEl = rsvpStep.querySelector('input, select');
-        if (!inputEl || !inputEl.value) {
-          inputEl && inputEl.focus();
+        const value = step.getValue();
+        if (value === null && !step.optional) {
+          const firstInput = rsvpStep.querySelector('input, select, textarea');
+          firstInput && firstInput.focus();
           return;
         }
-
-        if (inputEl.id === 'rsvpName') rsvpData.name = inputEl.value.trim();
-        if (inputEl.id === 'rsvpEmail') rsvpData.email = inputEl.value.trim();
-        if (inputEl.id === 'rsvpAttend') rsvpData.attending = inputEl.value;
+        step.setValue(value === null ? '' : value);
 
         rsvpCard.classList.add('rsvp-fade-out');
         setTimeout(() => {
@@ -841,16 +1007,7 @@
               <p>Please wait a moment.</p>
             `;
 
-            const formBody = new URLSearchParams({
-              Name: rsvpData.name,
-              Email: rsvpData.email,
-              Attending: rsvpData.attending
-            });
-
-            fetch(rsvpEndpoint, {
-              method: 'POST',
-              body: formBody
-            }).then(() => {
+            submitRsvpData(rsvpData).then(() => {
               rsvpStep.innerHTML = `
                 <h3>Thank you!</h3>
                 <p>Your response has been recorded.</p>
@@ -870,6 +1027,28 @@
             });
           }
         }, 200);
+      });
+    }
+
+    if (desktopRsvpForm) {
+      desktopRsvpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(desktopRsvpForm);
+        const data = {
+          name: (formData.get('Name') || '').toString().trim(),
+          mealPreference: (formData.get('MealPreference') || '').toString().trim(),
+          alcohol: (formData.get('Alcohol') || '').toString().trim(),
+          songRequest: (formData.get('SongRequest') || '').toString().trim(),
+          note: (formData.get('Note') || '').toString().trim()
+        };
+
+        try {
+          await submitRsvpData(data);
+          desktopRsvpForm.reset();
+          alert('Thank you! Your response has been recorded.');
+        } catch (error) {
+          alert('Something went wrong. Please try again.');
+        }
       });
     }
 
