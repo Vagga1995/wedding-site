@@ -608,7 +608,7 @@
       </p>
     </section>
 
-    <!-- PROPOSAL -->
+    <!-- PROPOSAL
     <section id="proposal" class="sage">
       <h2>The Proposal</h2>
       <div class="date">December 2025</div>
@@ -616,6 +616,7 @@
         What started as a weekend trip from Munich to Dolomites turned into a moment we’ll never forget. At sunset, on a snowy cliff overlooking the mountains, we walked into a surprise Nikhil, with the help of our friends, had set up. Somewhere between happy shock, laughter, and the sky turning gold, a knee was bent and a very enthusiastic yes was said, marking the beginning of an event celebrating love, family, and togetherness.
       </p>
     </section>
+    -->
 
     <!-- SCHEDULE -->
     <section id="schedule" class="sage">
@@ -677,9 +678,6 @@
     <!-- ACCOMMODATIONS -->
     <section id="accommodations" class="sage">
       <h2>Accommodations</h2>
-      <p>
-        Special room rates available at partner hotels. Details coming soon.
-      </p>
       <p style="max-width: 800px; margin: 20px auto 0; line-height: 1.8; font-size: 16px; font-weight: 600; color: #5C4033;">
         Want to extend your stay in Goa? Check out these accommodations around:
       </p>
@@ -694,27 +692,51 @@
     <!-- FAQ -->
     <section id="faq" class="sage">
       <h2>FAQ</h2>
-      <p>
-        Have questions? Check back soon for frequently asked questions and answers.
-      </p>
+      <div style="max-width: 900px; margin: 0 auto; text-align: left; color: #5C4033;">
+        <div style="margin-bottom: 28px;">
+          <p style="font-weight: 700; margin-bottom: 8px;text-align: left">
+            1. How do I reach the venue from the airport?
+          </p>
+          <p style="margin: 0;">
+            The venue is closest to Dabolim Airport, Goa. Taxis are easily available right outside the airport, and guests can make their way to the venue at their convenience.
+          </p>
+        </div>
+        <div style="margin-bottom: 28px;">
+          <p style="font-weight: 700; margin-bottom: 8px; text-align: left">
+            2. How do I notify my arrival details?
+          </p>
+          <p style="margin: 0;">
+            Closer to the wedding, we will share a link on this website where guests can update their arrival dates and timings. This will help us ensure a smooth check-in experience for everyone.
+          </p>
+        </div>
+        <div>
+          <p style="font-weight: 700; margin-bottom: 8px; text-align: left">
+            3. How do I share photos clicked during the wedding?
+          </p>
+          <p style="margin: 0;">
+            We will share a QR code where you can upload and share all the wonderful moments you capture during the celebrations.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <!-- WEDDING PARTY -->
+    <!-- WEDDING PARTY 
     <section id="party" class="sage">
       <h2>Wedding Party</h2>
       <p>
         Meet our wonderful wedding party members.
       </p>
     </section>
+    -->
 
-    <!-- REGISTRY -->
+    <!-- REGISTRY 
     <section id="registry" class="sage">
       <h2>Registry</h2>
       <p>
         Your presence is the greatest gift. Registry details coming soon.
       </p>
     </section>
-
+    -->
     <!-- RSVP section removed in favor of floating button + modal -->
 
     <footer>
@@ -734,6 +756,16 @@
         <div class="rsvp-box">
           <form name="submit-to-google-sheet">
             <input name="Name" placeholder="Full name" required />
+            <div class="rsvp-options" role="group" aria-label="Attendance confirmation">
+              <label class="rsvp-option">
+                <input type="checkbox" name="AttendingConfirm" value="Will attend!" required />
+                <span>Will attend!</span>
+              </label>
+              <label class="rsvp-option">
+                <input type="checkbox" name="AttendingConfirm" value="Unfortunately can't attend :(" />
+                <span>Unfortunately can't attend :(</span>
+              </label>
+            </div>
             <select name="MealPreference" required>
               <option value="">Meal preference</option>
               <option>Veg</option>
@@ -836,6 +868,7 @@
 
     const rsvpData = {
       name: '',
+      attendingConfirm: '',
       mealPreference: '',
       alcohol: '',
       songRequest: '',
@@ -847,14 +880,16 @@
     function buildRsvpPayload(data) {
       return {
         Name: data.name || '',
+        AttendingConfirm: data.attendingConfirm || '',
         MealPreference: data.mealPreference || '',
         Alcohol: data.alcohol || '',
         SongRequest: data.songRequest || '',
         Note: data.note || '',
         // Backward-compatibility keys in case Apps Script still maps old columns
         Email: data.mealPreference || 'N/A',
-        Attending: data.alcohol || 'N/A',
+        Attending: data.attendingConfirm || 'N/A',
         // Alternate labels if script maps by human-readable headers
+        'Attendance Confirmation': data.attendingConfirm || '',
         'Meal Preference': data.mealPreference || '',
         'Would you like to drink alcohol': data.alcohol || '',
         'Song Request': data.songRequest || '',
@@ -889,7 +924,26 @@
       },
       {
         title: 'RSVP',
-        text: '2. Meal preference:',
+        text: '2. We would be blessed by your presence. Kindly confirm so we may make the necessary arrangements.',
+        input: `<div class="rsvp-options" role="group" aria-label="Attendance confirmation">
+                  <label class="rsvp-option">
+                    <input type="checkbox" name="AttendingConfirm" value="Will attend!" />
+                    <span>Will attend!</span>
+                  </label>
+                  <label class="rsvp-option">
+                    <input type="checkbox" name="AttendingConfirm" value="Unfortunately can't attend :(" />
+                    <span>Unfortunately can't attend :(</span>
+                  </label>
+                </div>`,
+        getValue: () => {
+          const selected = rsvpStep.querySelector('input[name="AttendingConfirm"]:checked');
+          return selected ? selected.value : null;
+        },
+        setValue: (value) => { rsvpData.attendingConfirm = value; }
+      },
+      {
+        title: 'RSVP',
+        text: '3. Meal preference:',
         input: `<div class="rsvp-options" role="group" aria-label="Meal preference">
                   <label class="rsvp-option">
                     <input type="checkbox" name="MealPreference" value="Veg" />
@@ -908,7 +962,7 @@
       },
       {
         title: 'RSVP',
-        text: '3. Would you like to drink alcohol?:',
+        text: '4. Would you like to drink alcohol?:',
         input: `<div class="rsvp-options" role="group" aria-label="Alcohol preference">
                   <label class="rsvp-option">
                     <input type="checkbox" name="Alcohol" value="Yes" />
@@ -927,7 +981,7 @@
       },
       {
         title: 'RSVP',
-        text: '4. Which song will get you out on the dance floor? - leave your song request.',
+        text: '5. Which song will get you out on the dance floor? - leave your song request.',
         input: '<input id="rsvpSong" name="SongRequest" placeholder="Song request" required />',
         getValue: () => {
           const input = document.getElementById('rsvpSong');
@@ -937,7 +991,7 @@
       },
       {
         title: 'RSVP',
-        text: '5. Leave a note for the couple (optional):',
+        text: '6. Leave a note for the couple (optional):',
         input: '<textarea id="rsvpNote" name="Note" placeholder="Your note (optional)"></textarea>',
         getValue: () => {
           const input = document.getElementById('rsvpNote');
@@ -971,7 +1025,7 @@
         <button type="button" id="rsvpNext">${stepIndex < steps.length - 1 ? 'Next' : 'Submit'}</button>
       `;
 
-      ['MealPreference', 'Alcohol'].forEach((groupName) => {
+      ['AttendingConfirm', 'MealPreference', 'Alcohol'].forEach((groupName) => {
         const options = rsvpStep.querySelectorAll(`input[name="${groupName}"]`);
         if (options.length > 1) {
           options.forEach((option) => {
@@ -1031,11 +1085,24 @@
     }
 
     if (desktopRsvpForm) {
+      const desktopAttendingOptions = desktopRsvpForm.querySelectorAll('input[name="AttendingConfirm"]');
+      if (desktopAttendingOptions.length > 1) {
+        desktopAttendingOptions.forEach((option) => {
+          option.addEventListener('change', () => {
+            if (!option.checked) return;
+            desktopAttendingOptions.forEach((other) => {
+              if (other !== option) other.checked = false;
+            });
+          });
+        });
+      }
+
       desktopRsvpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(desktopRsvpForm);
         const data = {
           name: (formData.get('Name') || '').toString().trim(),
+          attendingConfirm: (formData.get('AttendingConfirm') || '').toString().trim(),
           mealPreference: (formData.get('MealPreference') || '').toString().trim(),
           alcohol: (formData.get('Alcohol') || '').toString().trim(),
           songRequest: (formData.get('SongRequest') || '').toString().trim(),
