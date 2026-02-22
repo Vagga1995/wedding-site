@@ -498,6 +498,27 @@
       background-color: transparent;
     }
 
+    .how-schedule-band {
+      height: 110px;
+      background: linear-gradient(
+        to bottom,
+        #FFF6EA 0%,
+        rgba(255, 246, 234, 0.82) 45%,
+        rgba(255, 255, 255, 0.9) 78%,
+        #ffffff 100%
+      );
+    }
+
+    .how-schedule-band.inverted {
+      background: linear-gradient(
+        to bottom,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.9) 22%,
+        rgba(255, 246, 234, 0.82) 55%,
+        #FFF6EA 100%
+      );
+    }
+
     #how p {
       background: transparent;
       padding: 0;
@@ -584,9 +605,13 @@
       display: block;
       margin: 0 auto 10px;
       border-radius: 10px;
-      box-shadow: 0 0 22px 14px #FFF6EA;
-      -webkit-mask-image: radial-gradient(circle, #000 68%, transparent 100%);
-      mask-image: radial-gradient(circle, #000 68%, transparent 100%);
+      box-shadow: 0 0 28px 18px rgba(255, 246, 234, 0.95);
+      -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.55) 50%, rgba(0, 0, 0, 0.14) 72%, rgba(0, 0, 0, 0) 100%);
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.55) 50%, rgba(0, 0, 0, 0.14) 72%, rgba(0, 0, 0, 0) 100%);
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
     }
 
     @media (max-width: 768px) {
@@ -683,7 +708,6 @@
         We met during our Master’s studies in a beautiful town in Germany, surrounded by snow, sunshine, and crystal-clear lakes. Our story began as a friendship and slowly grew into something more, until we realized that life felt warmer, fuller, and complete together. Five years, shared journeys, and countless memories later, here we are, planning our forever.
       </p>
     </section>
-
     <!-- PROPOSAL
     <section id="proposal" class="sage">
       <h2>The Proposal</h2>
@@ -694,6 +718,7 @@
     </section>
     -->
 
+    <div class="how-schedule-band" aria-hidden="true"></div>
     <!-- SCHEDULE -->
     <section id="schedule" class="sage">
       <h2>Schedule of Events</h2>
@@ -737,6 +762,7 @@
       </div>
     </section>
 
+    <div class="how-schedule-band inverted" aria-hidden="true"></div>
 
     <!-- THINGS TO DO -->
     <section id="things" class="sage">
@@ -751,6 +777,8 @@
       </ul>
     </section>
 
+    <div class="how-schedule-band" aria-hidden="true"></div>
+
     <!-- ACCOMMODATIONS -->
     <section id="accommodations" class="sage">
       <h2>Accommodations</h2>
@@ -764,6 +792,8 @@
         <li><a href="https://maps.app.goo.gl/QMzRT8UA4ukLy41p6" style="color: #5C4033; text-decoration: underline;" target="_blank" rel="noopener">Wildflower Villas An Eco-luxury Hideaway</a></li>
       </ol>
     </section>
+
+    <div class="how-schedule-band inverted" aria-hidden="true"></div>
 
     <div class="faq-footer-wrap">
     <!-- FAQ -->
@@ -827,7 +857,7 @@
   <div class="pane-right">
     <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
       <!-- LOGO -->
-      <img src="./images/img1.jpeg" alt="logo" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+      <img src="./images/img1.jpeg" alt="logo" style="width: 120px; height: 120px; border-radius: 100%; object-fit: cover; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
 
       <!-- RSVP (Desktop) -->
       <section id="rsvp-desktop" class="sage">
@@ -1263,3 +1293,9 @@
 
 </body>
 </html>
+
+
+
+
+
+
