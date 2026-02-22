@@ -366,24 +366,13 @@
       background-attachment: fixed;
       filter: none;
       transform: scale(1);
+      transition: filter 0.35s ease, transform 0.35s ease;
       z-index: 0;
     }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 72px;
-      background: linear-gradient(
-        to bottom,
-        rgba(244, 235, 222, 0) 0%,
-        rgba(244, 235, 222, 0.65) 72%,
-        #F4EBDE 100%
-      );
-      z-index: 0;
-      pointer-events: none;
+    .hero.hero-blurred::before {
+      filter: blur(5px);
+      transform: scale(1.03);
     }
 
     .hero > div,
@@ -983,10 +972,14 @@
 
     if (heroSection && heroContent) {
       const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const blurStartOffset = 10; // approximately 2-3 mouse-wheel notches
       const updateHeroTextParallax = () => {
         const rect = heroSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
         const releaseStart = viewportHeight * 0.6; // next section is ~80% visible
+        const paneScroll = paneLeft ? paneLeft.scrollTop : 0;
+        const windowScroll = window.scrollY || document.documentElement.scrollTop || 0;
+        const scrollOffset = Math.max(paneScroll, windowScroll);
         let shift = 0;
 
         if (rect.top < 0 && rect.bottom > 0) {
@@ -999,6 +992,7 @@
           }
         }
 
+        heroSection.classList.toggle('hero-blurred', scrollOffset > blurStartOffset);
         heroContent.style.setProperty('--hero-text-shift', `${shift.toFixed(2)}px`);
       };
 
