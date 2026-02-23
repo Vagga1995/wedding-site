@@ -132,6 +132,8 @@
     .rsvp-modal.open {
       opacity: 1;
       pointer-events: auto;
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
     }
 
     .rsvp-card {
@@ -393,7 +395,12 @@
     .hero h1 {
       font-family: 'Lobster Two', cursive;
       font-size: 64px;
+      font-weight: 400;
       margin-bottom: 10px;
+      text-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.62),
+        0 0 24px rgba(255, 232, 194, 0.62),
+        0 0 48px rgba(255, 210, 150, 0.45);
     }
 
     .hero-content {
@@ -408,6 +415,10 @@
       letter-spacing: 2px;
       font-size: 14px;
       opacity: 0.9;
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.58),
+        0 0 18px rgba(255, 232, 194, 0.5),
+        0 0 30px rgba(255, 210, 150, 0.32);
     }
 
     .scroll {
@@ -716,7 +727,7 @@
       <h2>How We Met</h2>
       <div class="date">October 2020</div>
       <p>
-        We met during our Master’s studies in a beautiful town in Germany, surrounded by snow, sunshine, and crystal-clear lakes. Our story began as a friendship and slowly grew into something more, until we realized that life felt warmer, fuller, and complete together. Five years, shared journeys, and countless memories later, here we are, planning our forever.
+        We met during our Master’s studies in a beautiful German town, a place with snowy winters and summers kissed by golden sunshine. Our story began as a friendship and slowly grew into something more, until we realized that life felt warmer, fuller, and complete together. Five years, shared journeys, and countless memories later, here we are, planning our forever.
       </p>
     </section>
     <!-- PROPOSAL
