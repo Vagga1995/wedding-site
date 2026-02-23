@@ -994,7 +994,7 @@
       const updateHeroTextParallax = () => {
         const rect = heroSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-        const releaseStart = viewportHeight * 0.35; // next section is ~80% visible
+        const releaseStart = viewportHeight * 0.4; // next section is ~80% visible
         const paneScroll = paneLeft ? paneLeft.scrollTop : 0;
         const windowScroll = window.scrollY || document.documentElement.scrollTop || 0;
         const scrollOffset = Math.max(paneScroll, windowScroll);
