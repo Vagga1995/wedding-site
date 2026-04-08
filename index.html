@@ -346,6 +346,21 @@
       opacity: 0;
     }
 
+    .splash-media {
+      max-width: 80%;
+      max-height: 80%;
+    }
+
+    .splash-video {
+      object-fit: contain;
+    }
+
+    .splash-fallback {
+      display: none;
+      object-fit: cover;
+      clip-path: inset(8% 0);
+    }
+
     .site-content {
       opacity: 0;
       transition: opacity 0.8s ease-in;
@@ -576,6 +591,128 @@
       background-color: #F5E8D6;
     }
 
+    .content-list,
+    .content-list-intro,
+    .content-list-ordered,
+    .content-link,
+    .faq-list,
+    .faq-question,
+    .faq-answer,
+    .schedule-list,
+    .schedule-entry-title,
+    .schedule-entry-label,
+    .schedule-entry-copy,
+    .desktop-pane-shell {
+      color: #5C4033;
+    }
+
+    .content-list,
+    .content-list-ordered {
+      max-width: 800px;
+      margin: 20px auto 0;
+      text-align: left;
+      line-height: 1.8;
+      font-size: 16px;
+      font-weight: 600;
+      padding-left: 20px;
+    }
+
+    .content-list-intro {
+      max-width: 800px;
+      margin: 20px auto 0;
+      line-height: 1.8;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .content-list-ordered {
+      margin-top: 10px;
+    }
+
+    .content-link {
+      text-decoration: underline;
+    }
+
+    .schedule-list {
+      max-width: 700px;
+      margin: auto;
+      text-align: left;
+    }
+
+    .schedule-entry {
+      margin-bottom: 50px;
+    }
+
+    .schedule-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .schedule-entry + .schedule-entry {
+      border-top: 2px solid rgba(150,174,151,0.3);
+      padding-top: 50px;
+    }
+
+    .schedule-entry-title {
+      font-family: 'Lobster Two', cursive;
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .schedule-entry-label,
+    .schedule-entry-copy,
+    .faq-question,
+    .faq-answer {
+      text-align: left;
+    }
+
+    .schedule-entry-label {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .schedule-entry-copy {
+      opacity: 0.95;
+    }
+
+    .schedule-entry-copy + .schedule-entry-label {
+      margin-top: 20px;
+    }
+
+    .schedule-entry-copy-spaced {
+      margin-bottom: 15px;
+    }
+
+    .schedule-entry-copy-tall {
+      margin-bottom: 30px;
+    }
+
+    .schedule-entry-copy-top {
+      margin-top: 10px;
+    }
+
+    .faq-list {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .faq-item {
+      margin-bottom: 28px;
+    }
+
+    .faq-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .faq-question {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .faq-answer {
+      margin: 0;
+    }
+
     section p {
       max-width: 800px;
       margin: auto;
@@ -636,6 +773,24 @@
       mask-size: 100% 100%;
     }
 
+    .desktop-pane-shell {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .desktop-logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 100%;
+      object-fit: cover;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
     @media (max-width: 768px) {
       body {
         flex-direction: column;
@@ -691,15 +846,15 @@
 
   <!-- SPLASH SCREEN -->
   <div class="splash-screen" id="splashScreen">
-    <video id="splashVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" style="max-width: 80%; max-height: 80%; object-fit: contain;">
+    <video id="splashVideo" class="splash-media splash-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
       <source src="./images/Animation-entry.mp4" type="video/mp4">
     </video>
-    <img id="splashFallback" src="./images/Website-entry-page.gif" alt="Welcome animation" style="display: none; max-width: 80%; max-height: 80%; object-fit: cover; clip-path: inset(8% 0);">
+    <img id="splashFallback" class="splash-media splash-fallback" src="./images/Website-entry-page.gif" alt="Welcome animation">
   </div>
 
   <div id="mainContent" class="site-content">
   <!-- NAV -->
-  <div class="nav-toggle" onclick="toggleNav()">☰</div>
+  <div class="nav-toggle" id="navToggle">☰</div>
   <button class="rsvp-fab" id="rsvpFab" type="button">RSVP</button>
 
   <nav class="nav" id="nav">
@@ -745,37 +900,37 @@
     <section id="schedule" class="sage">
       <h2>Schedule of Events</h2>
 
-      <div style="max-width: 700px; margin: auto; text-align: left;">
+      <div class="schedule-list">
 
-        <div style="margin-bottom: 50px;">
-          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #5C4033;">December 15 • 2:00 PM</h3>
-          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #5C4033;">✨ Check-in at the Resort</p>
-          <p style="text-align: left; opacity: 0.95; margin-bottom: 15px; color: #5C4033;">
+        <div class="schedule-entry">
+          <h3 class="schedule-entry-title">December 15 • 2:00 PM</h3>
+          <p class="schedule-entry-label">✨ Check-in at the Resort</p>
+          <p class="schedule-entry-copy schedule-entry-copy-spaced">
             Nanu Beach Resort & Spa<br>
             Betalbatim, Goa<br>
-            <a href="https://maps.app.goo.gl/8xG4cxwQ5vhLMVi39" style="color: #5C4033; text-decoration: underline;" target="_blank" rel="noopener">Visit Hotel Website</a>
+            <a href="https://maps.app.goo.gl/8xG4cxwQ5vhLMVi39" class="content-link" target="_blank" rel="noopener">Visit Hotel Website</a>
           </p>
-          <p style="text-align: left; font-weight: 600; margin-top: 20px; color: #5C4033;">🎉 Evening: Devgon</p>
-          <p style="text-align: left; opacity: 0.95; color: #5C4033;">
+          <p class="schedule-entry-label">🎉 Evening: Devgon</p>
+          <p class="schedule-entry-copy">
             Followed by sunset on the beach, music, dinner, and time with family and friends.          </p>
         </div>
 
-        <div style="margin-bottom: 50px; border-top: 2px solid rgba(150,174,151,0.3); padding-top: 50px;">
-          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #5C4033;">December 16</h3>
-          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #5C4033;">💍 9:00 AM - Wedding Ceremony</p>
-          <p style="text-align: left; opacity: 0.95; margin-bottom: 30px; color: #5C4033;">
+        <div class="schedule-entry">
+          <h3 class="schedule-entry-title">December 16</h3>
+          <p class="schedule-entry-label">💍 9:00 AM - Wedding Ceremony</p>
+          <p class="schedule-entry-copy schedule-entry-copy-tall">
             The big moment we've been waiting for!
           </p>
-          <p style="text-align: left; font-weight: 600; margin-bottom: 10px; color: #5C4033;">🍹 6:00 PM - Cocktail Party</p>
-          <p style="text-align: left; opacity: 0.95; color: #5C4033;">
+          <p class="schedule-entry-label">🍹 6:00 PM - Cocktail Party</p>
+          <p class="schedule-entry-copy">
             Dinner, drinks & dancing to follow!
           </p>
         </div>
 
-        <div style="border-top: 2px solid rgba(150,174,151,0.3); padding-top: 50px;">
-          <h3 style="font-family: 'Lobster Two', cursive; font-size: 28px; margin-bottom: 15px; color: #5C4033;">December 17 • 11:00 AM</h3>
-          <p style="text-align: left; font-weight: 600; color: #5C4033;">🌅 Check-out from Resort</p>
-          <p style="text-align: left; opacity: 0.95; margin-top: 10px; color: #5C4033;">
+        <div class="schedule-entry">
+          <h3 class="schedule-entry-title">December 17 • 11:00 AM</h3>
+          <p class="schedule-entry-label">🌅 Check-out from Resort</p>
+          <p class="schedule-entry-copy schedule-entry-copy-top">
             We will keep updating the event flow and timings here for all days...
           </p>
         </div>
@@ -791,7 +946,7 @@
       <p>
         Explore the local area, enjoy the gardens, and discover nearby attractions.
       </p>
-      <ul style="max-width: 800px; margin: 20px auto 0; text-align: left; line-height: 1.8; font-size: 16px; font-weight: 600; color: #5C4033; padding-left: 20px;">
+      <ul class="content-list">
         <li>Explore nearby beaches like Betalbatim beach (just steps away), Sernabatim beach or Colva beach.</li>
         <li>Magzika Beach Shack &amp; Baggies Beach Shack - Great for casual beachside meals.</li>
         <li>A3 Bros Restaurant and Bar - Highly rated local favourite.</li>
@@ -803,14 +958,14 @@
     <!-- ACCOMMODATIONS -->
     <section id="accommodations" class="sage">
       <h2>Accommodations</h2>
-      <p style="max-width: 800px; margin: 20px auto 0; line-height: 1.8; font-size: 16px; font-weight: 600; color: #5C4033;">
+      <p class="content-list-intro">
         Want to extend your stay in Goa? Check out these accommodations around:
       </p>
-      <ol style="max-width: 800px; margin: 10px auto 0; text-align: left; line-height: 1.8; font-size: 16px; font-weight: 600; color: #5C4033; padding-left: 20px;">
-        <li><a href="https://maps.app.goo.gl/QSfQBq9Haoo6xYX36" style="color: #5C4033; text-decoration: underline;" target="_blank" rel="noopener">Beleza By The Beach</a></li>
-        <li><a href="https://maps.app.goo.gl/qYyNabU1HiPAgora7" style="color: #5C4033; text-decoration: underline;" target="_blank" rel="noopener">Salcete Beach Resort</a></li>
-        <li><a href="https://maps.app.goo.gl/Cf2cdQW5C7WFwAzg6" style="color: #5C4033; text-decoration: underline;" target="_blank" rel="noopener">Kenilworth Resort &amp; Spa</a></li>
-        <li><a href="https://maps.app.goo.gl/QMzRT8UA4ukLy41p6" style="color: #5C4033; text-decoration: underline;" target="_blank" rel="noopener">Wildflower Villas An Eco-luxury Hideaway</a></li>
+      <ol class="content-list-ordered">
+        <li><a href="https://maps.app.goo.gl/QSfQBq9Haoo6xYX36" class="content-link" target="_blank" rel="noopener">Beleza By The Beach</a></li>
+        <li><a href="https://maps.app.goo.gl/qYyNabU1HiPAgora7" class="content-link" target="_blank" rel="noopener">Salcete Beach Resort</a></li>
+        <li><a href="https://maps.app.goo.gl/Cf2cdQW5C7WFwAzg6" class="content-link" target="_blank" rel="noopener">Kenilworth Resort &amp; Spa</a></li>
+        <li><a href="https://maps.app.goo.gl/QMzRT8UA4ukLy41p6" class="content-link" target="_blank" rel="noopener">Wildflower Villas An Eco-luxury Hideaway</a></li>
       </ol>
     </section>
 
@@ -820,28 +975,28 @@
     <!-- FAQ -->
     <section id="faq" class="sage">
       <h2>FAQ</h2>
-      <div style="max-width: 900px; margin: 0 auto; text-align: left; color: #5C4033;">
-        <div style="margin-bottom: 28px;">
-          <p style="font-weight: 700; margin-bottom: 8px;text-align: left">
+      <div class="faq-list">
+        <div class="faq-item">
+          <p class="faq-question">
             1. How do I reach the venue from the airport?
           </p>
-          <p style="margin: 0;">
+          <p class="faq-answer">
             The venue is closest to Dabolim Airport, Goa. Taxis are easily available right outside the airport, and guests can make their way to the venue at their convenience.
           </p>
         </div>
-        <div style="margin-bottom: 28px;">
-          <p style="font-weight: 700; margin-bottom: 8px; text-align: left">
+        <div class="faq-item">
+          <p class="faq-question">
             2. How do I notify my arrival details?
           </p>
-          <p style="margin: 0;">
+          <p class="faq-answer">
             Closer to the wedding, we will share a link on this website where guests can update their arrival dates and timings. This will help us ensure a smooth check-in experience for everyone.
           </p>
         </div>
-        <div>
-          <p style="font-weight: 700; margin-bottom: 8px; text-align: left">
+        <div class="faq-item">
+          <p class="faq-question">
             3. How do I share photos clicked during the wedding?
           </p>
-          <p style="margin: 0;">
+          <p class="faq-answer">
             We will share a QR code where you can upload and share all the wonderful moments you capture during the celebrations.
           </p>
         </div>
@@ -876,9 +1031,9 @@
 
   <!-- RIGHT PANE (FIXED DESKTOP ONLY) -->
   <div class="pane-right">
-    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+    <div class="desktop-pane-shell">
       <!-- LOGO -->
-      <img src="./images/img1.jpeg" alt="logo" style="width: 120px; height: 120px; border-radius: 100%; object-fit: cover; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+      <img src="./images/img1.jpeg" alt="logo" class="desktop-logo">
 
       <!-- RSVP (Desktop) -->
       <section id="rsvp-desktop" class="sage">
@@ -920,115 +1075,40 @@
   </div>
 
 
-  <script>
-    // Fade out splash media and fade in website content
-    const splashScreen = document.getElementById('splashScreen');
-    const mainContent = document.getElementById('mainContent');
-    const splashDuration = 2200;
-    const mediaFadeLead = 700;
-    if (splashScreen) {
-      setTimeout(() => {
-        splashScreen.classList.add('fade-media');
-      }, Math.max(0, splashDuration - mediaFadeLead));
+    <script>
+    /**
+     * Centralises DOM lookups so the rest of the script can work with named
+     * references instead of scattered selectors.
+     */
+    const elements = {
+      splashScreen: document.getElementById('splashScreen'),
+      splashVideo: document.getElementById('splashVideo'),
+      splashFallback: document.getElementById('splashFallback'),
+      mainContent: document.getElementById('mainContent'),
+      nav: document.getElementById('nav'),
+      navToggle: document.getElementById('navToggle'),
+      navLinks: document.querySelectorAll('.nav a'),
+      paneLeft: document.querySelector('.pane-left'),
+      heroSection: document.querySelector('.hero'),
+      heroContent: document.querySelector('.hero-content'),
+      rsvpFab: document.getElementById('rsvpFab'),
+      rsvpModal: document.getElementById('rsvpModal'),
+      rsvpClose: document.getElementById('rsvpClose'),
+      rsvpStep: document.getElementById('rsvpStep'),
+      rsvpCard: document.getElementById('rsvpCard'),
+      howSection: document.getElementById('how'),
+      desktopRsvpForm: document.forms['submit-to-google-sheet']
+    };
 
-      setTimeout(() => {
-        splashScreen.classList.add('hidden');
-        if (mainContent) {
-          mainContent.classList.add('visible');
-        }
-      }, splashDuration);
-    } else if (mainContent) {
-      mainContent.classList.add('visible');
-    }
+    const SPLASH_DURATION_MS = 2200;
+    const SPLASH_FADE_LEAD_MS = 700;
+    const HERO_BLUR_SCROLL_OFFSET = 10;
+    const HERO_RELEASE_VISIBILITY_RATIO = 0.4;
+    const RSVP_TRANSITION_MS = 200;
+    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx9cbevZyqf368wxbH5zTE-ywxcL7tZxmpLoSpD63vzfArq-Rg8NusXT2z41n59n-GL/exec';
+    const MUTUALLY_EXCLUSIVE_GROUPS = ['AttendingConfirm', 'MealPreference'];
 
-    // iOS Safari: best-effort autoplay for inline muted video
-    const splashVideo = document.getElementById('splashVideo');
-    const splashFallback = document.getElementById('splashFallback');
-    if (splashVideo) {
-      const tryPlay = () => {
-        const playPromise = splashVideo.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {
-            if (splashFallback) {
-              splashVideo.style.display = 'none';
-              splashFallback.style.display = 'block';
-            }
-          });
-        }
-      };
-      tryPlay();
-      document.addEventListener('touchend', tryPlay, { once: true });
-    }
-
-    const nav = document.getElementById('nav');
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelectorAll('.nav a');
-    const paneLeft = document.querySelector('.pane-left');
-    const heroSection = document.querySelector('.hero');
-    const heroContent = document.querySelector('.hero-content');
-
-    function toggleNav() {
-      nav.classList.toggle('open');
-    }
-
-    function closeNav() {
-      nav.classList.remove('open');
-    }
-
-    // Close nav when clicking a link
-    navLinks.forEach(link => {
-      link.addEventListener('click', closeNav);
-    });
-
-    // Close nav when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
-        closeNav();
-      }
-    });
-
-    if (heroSection && heroContent) {
-      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-      const blurStartOffset = 10; // approximately 2-3 mouse-wheel notches
-      const updateHeroTextParallax = () => {
-        const rect = heroSection.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-        const releaseStart = viewportHeight * 0.4; // next section is ~80% visible
-        const paneScroll = paneLeft ? paneLeft.scrollTop : 0;
-        const windowScroll = window.scrollY || document.documentElement.scrollTop || 0;
-        const scrollOffset = Math.max(paneScroll, windowScroll);
-        let shift = 0;
-
-        if (rect.top < 0 && rect.bottom > 0) {
-          const centeredShift = -rect.top;
-          if (rect.bottom >= releaseStart) {
-            shift = centeredShift;
-          } else {
-            const releaseFactor = clamp(rect.bottom / releaseStart, 0, 1);
-            shift = centeredShift * releaseFactor;
-          }
-        }
-
-        heroSection.classList.toggle('hero-blurred', scrollOffset > blurStartOffset);
-        heroContent.style.setProperty('--hero-text-shift', `${shift.toFixed(2)}px`);
-      };
-
-      updateHeroTextParallax();
-      window.addEventListener('scroll', updateHeroTextParallax, { passive: true });
-      window.addEventListener('resize', updateHeroTextParallax);
-      if (paneLeft) {
-        paneLeft.addEventListener('scroll', updateHeroTextParallax, { passive: true });
-      }
-    }
-
-    // RSVP modal stepper
-    const rsvpFab = document.getElementById('rsvpFab');
-    const rsvpModal = document.getElementById('rsvpModal');
-    const rsvpClose = document.getElementById('rsvpClose');
-    const rsvpStep = document.getElementById('rsvpStep');
-    const rsvpCard = document.getElementById('rsvpCard');
-
-    const rsvpData = {
+    const rsvpSubmissionState = {
       name: '',
       attendingConfirm: '',
       mealPreference: '',
@@ -1036,243 +1116,471 @@
       songRequest: '',
       note: ''
     };
-    const rsvpEndpoint = 'https://script.google.com/macros/s/AKfycbx9cbevZyqf368wxbH5zTE-ywxcL7tZxmpLoSpD63vzfArq-Rg8NusXT2z41n59n-GL/exec';
-    const desktopRsvpForm = document.forms['submit-to-google-sheet'];
 
-    function buildRsvpPayload(data) {
+    let currentRsvpStepIndex = 0;
+
+    /**
+     * Keeps numeric calculations predictable for the hero parallax math.
+     */
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    /**
+     * The splash animation acts as the site's perceived load handshake. The two
+     * timers intentionally overlap the media fade and content reveal so the
+     * transition feels continuous rather than abrupt.
+     */
+    function initializeSplashScreen() {
+      const { splashScreen, mainContent } = elements;
+
+      if (!splashScreen) {
+        if (mainContent) {
+          mainContent.classList.add('visible');
+        }
+        return;
+      }
+
+      setTimeout(() => {
+        splashScreen.classList.add('fade-media');
+      }, Math.max(0, SPLASH_DURATION_MS - SPLASH_FADE_LEAD_MS));
+
+      setTimeout(() => {
+        splashScreen.classList.add('hidden');
+        if (mainContent) {
+          mainContent.classList.add('visible');
+        }
+      }, SPLASH_DURATION_MS);
+    }
+
+    /**
+     * iOS Safari can refuse autoplay even for muted inline video. When that
+     * happens, the GIF fallback preserves the same visual entry point.
+     */
+    function initializeSplashPlaybackFallback() {
+      const { splashVideo, splashFallback } = elements;
+
+      if (!splashVideo) {
+        return;
+      }
+
+      const attemptPlayback = () => {
+        const playbackPromise = splashVideo.play();
+
+        if (playbackPromise && typeof playbackPromise.catch === 'function') {
+          playbackPromise.catch(() => {
+            if (!splashFallback) {
+              return;
+            }
+
+            splashVideo.style.display = 'none';
+            splashFallback.style.display = 'block';
+          });
+        }
+      };
+
+      attemptPlayback();
+      document.addEventListener('touchend', attemptPlayback, { once: true });
+    }
+
+    function closeNavigation() {
+      if (elements.nav) {
+        elements.nav.classList.remove('open');
+      }
+    }
+
+    function toggleNavigation() {
+      if (elements.nav) {
+        elements.nav.classList.toggle('open');
+      }
+    }
+
+    /**
+     * The side navigation is intentionally lightweight. We only preserve its
+     * current open, close-on-link, and close-on-outside-click behavior.
+     */
+    function initializeNavigation() {
+      const { nav, navLinks, navToggle } = elements;
+
+      if (!nav || !navToggle) {
+        return;
+      }
+
+      navToggle.addEventListener('click', toggleNavigation);
+      navLinks.forEach((link) => link.addEventListener('click', closeNavigation));
+
+      document.addEventListener('click', (event) => {
+        if (!nav.contains(event.target) && !navToggle.contains(event.target)) {
+          closeNavigation();
+        }
+      });
+    }
+
+    /**
+     * The hero text stays visually anchored while the hero is still dominant in
+     * the viewport, then releases as the next section takes over.
+     */
+    function updateHeroTextParallax() {
+      const { heroSection, heroContent, paneLeft } = elements;
+
+      if (!heroSection || !heroContent) {
+        return;
+      }
+
+      const heroRect = heroSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const releaseThreshold = viewportHeight * HERO_RELEASE_VISIBILITY_RATIO;
+      const paneScroll = paneLeft ? paneLeft.scrollTop : 0;
+      const windowScroll = window.scrollY || document.documentElement.scrollTop || 0;
+      const scrollOffset = Math.max(paneScroll, windowScroll);
+      let textShift = 0;
+
+      if (heroRect.top < 0 && heroRect.bottom > 0) {
+        const centeredShift = -heroRect.top;
+
+        if (heroRect.bottom >= releaseThreshold) {
+          textShift = centeredShift;
+        } else {
+          const releaseFactor = clamp(heroRect.bottom / releaseThreshold, 0, 1);
+          textShift = centeredShift * releaseFactor;
+        }
+      }
+
+      heroSection.classList.toggle('hero-blurred', scrollOffset > HERO_BLUR_SCROLL_OFFSET);
+      heroContent.style.setProperty('--hero-text-shift', `${textShift.toFixed(2)}px`);
+    }
+
+    function initializeHeroParallax() {
+      const { heroSection, heroContent, paneLeft } = elements;
+
+      if (!heroSection || !heroContent) {
+        return;
+      }
+
+      updateHeroTextParallax();
+      window.addEventListener('scroll', updateHeroTextParallax, { passive: true });
+      window.addEventListener('resize', updateHeroTextParallax);
+
+      if (paneLeft) {
+        paneLeft.addEventListener('scroll', updateHeroTextParallax, { passive: true });
+      }
+    }
+
+    /**
+     * The Apps Script endpoint has evolved over time, so the legacy column keys
+     * remain in the payload to avoid a silent spreadsheet mapping regression.
+     */
+    function buildRsvpPayload(formState) {
       return {
-        Name: data.name || '',
-        AttendingConfirm: data.attendingConfirm || '',
-        MealPreference: data.mealPreference || '',
-        Alcohol: data.alcohol || '',
-        SongRequest: data.songRequest || '',
-        Note: data.note || '',
-        // Backward-compatibility keys in case Apps Script still maps old columns
-        Email: data.mealPreference || 'N/A',
-        Attending: data.attendingConfirm || 'N/A',
-        // Alternate labels if script maps by human-readable headers
-        'Attendance Confirmation': data.attendingConfirm || '',
-        'Meal Preference': data.mealPreference || '',
-        'Would you like to drink alcohol': data.alcohol || '',
-        'Song Request': data.songRequest || '',
-        'Note for Couple': data.note || ''
+        Name: formState.name || '',
+        AttendingConfirm: formState.attendingConfirm || '',
+        MealPreference: formState.mealPreference || '',
+        Alcohol: formState.alcohol || '',
+        SongRequest: formState.songRequest || '',
+        Note: formState.note || '',
+        Email: formState.mealPreference || 'N/A',
+        Attending: formState.attendingConfirm || 'N/A',
+        'Attendance Confirmation': formState.attendingConfirm || '',
+        'Meal Preference': formState.mealPreference || '',
+        'Would you like to drink alcohol': formState.alcohol || '',
+        'Song Request': formState.songRequest || '',
+        'Note for Couple': formState.note || ''
       };
     }
 
-    async function submitRsvpData(data) {
-      const payload = buildRsvpPayload(data);
-      const formBody = new URLSearchParams(payload);
-      // Apps Script web apps are most reliable cross-origin with no-cors form-style POST.
-      await fetch(rsvpEndpoint, {
+    /**
+     * Apps Script web apps are most reliable cross-origin when posted as a
+     * no-cors form submission. The lack of response inspection is deliberate.
+     */
+    async function submitRsvpData(formState) {
+      await fetch(RSVP_ENDPOINT, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
-        body: formBody
+        body: new URLSearchParams(buildRsvpPayload(formState))
       });
     }
 
-    const steps = [
+    function readTrimmedInputValue(inputId) {
+      const input = document.getElementById(inputId);
+      return input && input.value.trim() ? input.value.trim() : null;
+    }
+
+    function readTextareaValue(inputId) {
+      const input = document.getElementById(inputId);
+      return input ? input.value.trim() : '';
+    }
+
+    function readCheckedValue(container, groupName) {
+      const selectedOption = container.querySelector(`input[name="${groupName}"]:checked`);
+      return selectedOption ? selectedOption.value : null;
+    }
+
+    /**
+     * Checkboxes are intentionally retained to preserve the existing visual
+     * styling, but their behavior is constrained to a single active option.
+     */
+    function enforceSingleSelection(container, groupName) {
+      const options = container.querySelectorAll(`input[name="${groupName}"]`);
+
+      if (options.length < 2) {
+        return;
+      }
+
+      options.forEach((option) => {
+        option.addEventListener('change', () => {
+          if (!option.checked) {
+            return;
+          }
+
+          options.forEach((otherOption) => {
+            if (otherOption !== option) {
+              otherOption.checked = false;
+            }
+          });
+        });
+      });
+    }
+
+    function showRsvpStatus(title, message, actionMarkup = '') {
+      if (!elements.rsvpStep) {
+        return;
+      }
+
+      elements.rsvpStep.innerHTML = `
+        <h3>${title}</h3>
+        <p>${message}</p>
+        ${actionMarkup}
+      `;
+    }
+
+    function animateRsvpCardTransition(onComplete) {
+      if (!elements.rsvpCard) {
+        onComplete();
+        return;
+      }
+
+      elements.rsvpCard.classList.add('rsvp-fade-out');
+      setTimeout(() => {
+        elements.rsvpCard.classList.remove('rsvp-fade-out');
+        onComplete();
+      }, RSVP_TRANSITION_MS);
+    }
+
+    const rsvpSteps = [
       {
         title: 'RSVP',
         text: 'Full name:',
         input: '<input id="rsvpName" name="Name" placeholder="Your full name" required />',
-        getValue: () => {
-          const input = document.getElementById('rsvpName');
-          return input && input.value.trim() ? input.value.trim() : null;
-        },
-        setValue: (value) => { rsvpData.name = value; }
+        getValue: () => readTrimmedInputValue('rsvpName'),
+        setValue: (value) => {
+          rsvpSubmissionState.name = value;
+        }
       },
       {
         title: 'RSVP',
         text: 'We would be blessed by your presence. Kindly let us know so we may welcome you with all our love.',
-        input: `<div class="rsvp-options" role="group" aria-label="Attendance confirmation">
-                  <label class="rsvp-option">
-                    <input type="checkbox" name="AttendingConfirm" value="Will attend!" />
-                    <span>Will attend!</span>
-                  </label>
-                  <label class="rsvp-option">
-                    <input type="checkbox" name="AttendingConfirm" value="Unfortunately can't attend &#128577;" />
-                    <span>Unfortunately can't attend &#128577;</span>
-                  </label>
-                </div>`,
-        getValue: () => {
-          const selected = rsvpStep.querySelector('input[name="AttendingConfirm"]:checked');
-          return selected ? selected.value : null;
-        },
-        setValue: (value) => { rsvpData.attendingConfirm = value; }
+        input: `
+          <div class="rsvp-options" role="group" aria-label="Attendance confirmation">
+            <label class="rsvp-option">
+              <input type="checkbox" name="AttendingConfirm" value="Will attend!" />
+              <span>Will attend!</span>
+            </label>
+            <label class="rsvp-option">
+              <input type="checkbox" name="AttendingConfirm" value="Unfortunately can't attend &#128577;" />
+              <span>Unfortunately can't attend &#128577;</span>
+            </label>
+          </div>
+        `,
+        getValue: () => readCheckedValue(elements.rsvpStep, 'AttendingConfirm'),
+        setValue: (value) => {
+          rsvpSubmissionState.attendingConfirm = value;
+        }
       },
       {
         title: 'RSVP',
         text: 'Meal preference:',
-        input: `<div class="rsvp-options" role="group" aria-label="Meal preference">
-                  <label class="rsvp-option">
-                    <input type="checkbox" name="MealPreference" value="Veg" />
-                    <span>Veg</span>
-                  </label>
-                  <label class="rsvp-option">
-                    <input type="checkbox" name="MealPreference" value="Non-Veg" />
-                    <span>Non-Veg</span>
-                  </label>
-                </div>`,
-        getValue: () => {
-          const selected = rsvpStep.querySelector('input[name="MealPreference"]:checked');
-          return selected ? selected.value : null;
-        },
-        setValue: (value) => { rsvpData.mealPreference = value; }
+        input: `
+          <div class="rsvp-options" role="group" aria-label="Meal preference">
+            <label class="rsvp-option">
+              <input type="checkbox" name="MealPreference" value="Veg" />
+              <span>Veg</span>
+            </label>
+            <label class="rsvp-option">
+              <input type="checkbox" name="MealPreference" value="Non-Veg" />
+              <span>Non-Veg</span>
+            </label>
+          </div>
+        `,
+        getValue: () => readCheckedValue(elements.rsvpStep, 'MealPreference'),
+        setValue: (value) => {
+          rsvpSubmissionState.mealPreference = value;
+        }
       },
       {
         title: 'RSVP',
         text: 'Which song will get you out on the dance floor? - leave your song request. (optional)',
         input: '<input id="rsvpSong" name="SongRequest" placeholder="Song request" />',
-        getValue: () => {
-          const input = document.getElementById('rsvpSong');
-          return input && input.value.trim() ? input.value.trim() : null;
+        getValue: () => readTrimmedInputValue('rsvpSong'),
+        setValue: (value) => {
+          rsvpSubmissionState.songRequest = value;
         },
-        setValue: (value) => { rsvpData.songRequest = value; },
         optional: true
       },
       {
         title: 'RSVP',
         text: 'Leave a note for the couple (optional):',
         input: '<textarea id="rsvpNote" name="Note" placeholder="Your note (optional)"></textarea>',
-        getValue: () => {
-          const input = document.getElementById('rsvpNote');
-          return input ? input.value.trim() : '';
+        getValue: () => readTextareaValue('rsvpNote'),
+        setValue: (value) => {
+          rsvpSubmissionState.note = value;
         },
-        setValue: (value) => { rsvpData.note = value; },
         optional: true
       }
     ];
 
-    let stepIndex = 0;
+    async function submitModalRsvp() {
+      showRsvpStatus('Submitting...', 'Please wait a moment.');
 
-    function openRsvp() {
-      stepIndex = 0;
-      rsvpModal.classList.add('open');
-      rsvpModal.setAttribute('aria-hidden', 'false');
-      renderStep();
+      try {
+        await submitRsvpData(rsvpSubmissionState);
+        showRsvpStatus('Thank you!', 'Your response has been recorded.', '<button type="button" id="rsvpDone">Close</button>');
+
+        const doneButton = document.getElementById('rsvpDone');
+        if (doneButton) {
+          doneButton.addEventListener('click', closeRsvpModal);
+        }
+      } catch (error) {
+        showRsvpStatus('Something went wrong', 'Please try again.', '<button type="button" id="rsvpRetry">Retry</button>');
+
+        const retryButton = document.getElementById('rsvpRetry');
+        if (retryButton) {
+          retryButton.addEventListener('click', () => {
+            currentRsvpStepIndex = rsvpSteps.length - 1;
+            renderRsvpStep();
+          });
+        }
+      }
     }
 
-    function closeRsvp() {
-      rsvpModal.classList.remove('open');
-      rsvpModal.setAttribute('aria-hidden', 'true');
+    function advanceRsvpFlow() {
+      animateRsvpCardTransition(() => {
+        currentRsvpStepIndex += 1;
+
+        if (currentRsvpStepIndex < rsvpSteps.length) {
+          renderRsvpStep();
+          return;
+        }
+
+        submitModalRsvp();
+      });
     }
 
-    function renderStep() {
-      const step = steps[stepIndex];
-      const nextLabel = 'Next';
-      const skipButton = step.optional
-        ? `<button type="button" id="rsvpSkip">${stepIndex === steps.length - 1 ? 'Skip and Submit' : 'Skip'}</button>`
+    /**
+     * Each step is configuration-driven so content edits stay separate from the
+     * control flow that handles validation, animation, and submission.
+     */
+    function renderRsvpStep() {
+      const { rsvpStep } = elements;
+      const step = rsvpSteps[currentRsvpStepIndex];
+
+      if (!rsvpStep || !step) {
+        return;
+      }
+
+      const skipButtonMarkup = step.optional
+        ? `<button type="button" id="rsvpSkip">${currentRsvpStepIndex === rsvpSteps.length - 1 ? 'Skip and Submit' : 'Skip'}</button>`
         : '';
+
       rsvpStep.innerHTML = `
         <h3>${step.title}</h3>
         <p>${step.text}</p>
         ${step.input}
         <div class="rsvp-actions">
-          <button type="button" id="rsvpNext">${nextLabel}</button>
-          ${skipButton}
+          <button type="button" id="rsvpNext">Next</button>
+          ${skipButtonMarkup}
         </div>
       `;
 
-      ['AttendingConfirm', 'MealPreference'].forEach((groupName) => {
-        const options = rsvpStep.querySelectorAll(`input[name="${groupName}"]`);
-        if (options.length > 1) {
-          options.forEach((option) => {
-            option.addEventListener('change', () => {
-              if (!option.checked) return;
-              options.forEach((other) => {
-                if (other !== option) other.checked = false;
-              });
-            });
-          });
-        }
-      });
+      MUTUALLY_EXCLUSIVE_GROUPS.forEach((groupName) => enforceSingleSelection(rsvpStep, groupName));
 
-      const goToNextStep = () => {
-        rsvpCard.classList.add('rsvp-fade-out');
-        setTimeout(() => {
-          rsvpCard.classList.remove('rsvp-fade-out');
-          stepIndex += 1;
-          if (stepIndex < steps.length) {
-            renderStep();
-          } else {
-            rsvpStep.innerHTML = `
-              <h3>Submitting...</h3>
-              <p>Please wait a moment.</p>
-            `;
+      const nextButton = document.getElementById('rsvpNext');
+      const skipButton = document.getElementById('rsvpSkip');
 
-            submitRsvpData(rsvpData).then(() => {
-              rsvpStep.innerHTML = `
-                <h3>Thank you!</h3>
-                <p>Your response has been recorded.</p>
-                <button type="button" id="rsvpDone">Close</button>
-              `;
-              document.getElementById('rsvpDone').addEventListener('click', closeRsvp);
-            }).catch(() => {
-              rsvpStep.innerHTML = `
-                <h3>Something went wrong</h3>
-                <p>Please try again.</p>
-                <button type="button" id="rsvpRetry">Retry</button>
-              `;
-              document.getElementById('rsvpRetry').addEventListener('click', () => {
-                stepIndex = steps.length - 1;
-                renderStep();
-              });
-            });
+      if (nextButton) {
+        nextButton.addEventListener('click', () => {
+          const value = step.getValue();
+
+          if (value === null && !step.optional) {
+            const firstInput = rsvpStep.querySelector('input, select, textarea');
+            if (firstInput) {
+              firstInput.focus();
+            }
+            return;
           }
-        }, 200);
-      };
 
-      const nextBtn = document.getElementById('rsvpNext');
-      nextBtn.addEventListener('click', () => {
-        const value = step.getValue();
-        if (value === null && !step.optional) {
-          const firstInput = rsvpStep.querySelector('input, select, textarea');
-          firstInput && firstInput.focus();
-          return;
-        }
-        step.setValue(value === null ? '' : value);
-        goToNextStep();
-      });
+          step.setValue(value === null ? '' : value);
+          advanceRsvpFlow();
+        });
+      }
 
-      const skipBtn = document.getElementById('rsvpSkip');
-      if (skipBtn) {
-        skipBtn.addEventListener('click', () => {
+      if (skipButton) {
+        skipButton.addEventListener('click', () => {
           step.setValue('');
-          goToNextStep();
+          advanceRsvpFlow();
         });
       }
     }
 
-    if (desktopRsvpForm) {
-      const desktopAttendingOptions = desktopRsvpForm.querySelectorAll('input[name="AttendingConfirm"]');
-      if (desktopAttendingOptions.length > 1) {
-        desktopAttendingOptions.forEach((option) => {
-          option.addEventListener('change', () => {
-            if (!option.checked) return;
-            desktopAttendingOptions.forEach((other) => {
-              if (other !== option) other.checked = false;
-            });
-          });
-        });
+    function openRsvpModal() {
+      if (!elements.rsvpModal) {
+        return;
       }
 
-      desktopRsvpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(desktopRsvpForm);
-        const data = {
-          name: (formData.get('Name') || '').toString().trim(),
-          attendingConfirm: (formData.get('AttendingConfirm') || '').toString().trim(),
-          mealPreference: (formData.get('MealPreference') || '').toString().trim(),
-          alcohol: (formData.get('Alcohol') || '').toString().trim(),
-          songRequest: (formData.get('SongRequest') || '').toString().trim(),
-          note: (formData.get('Note') || '').toString().trim()
-        };
+      currentRsvpStepIndex = 0;
+      elements.rsvpModal.classList.add('open');
+      elements.rsvpModal.setAttribute('aria-hidden', 'false');
+      renderRsvpStep();
+    }
+
+    function closeRsvpModal() {
+      if (!elements.rsvpModal) {
+        return;
+      }
+
+      elements.rsvpModal.classList.remove('open');
+      elements.rsvpModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function extractDesktopFormData() {
+      const formData = new FormData(elements.desktopRsvpForm);
+
+      return {
+        name: (formData.get('Name') || '').toString().trim(),
+        attendingConfirm: (formData.get('AttendingConfirm') || '').toString().trim(),
+        mealPreference: (formData.get('MealPreference') || '').toString().trim(),
+        alcohol: (formData.get('Alcohol') || '').toString().trim(),
+        songRequest: (formData.get('SongRequest') || '').toString().trim(),
+        note: (formData.get('Note') || '').toString().trim()
+      };
+    }
+
+    function initializeDesktopRsvpForm() {
+      const { desktopRsvpForm } = elements;
+
+      if (!desktopRsvpForm) {
+        return;
+      }
+
+      enforceSingleSelection(desktopRsvpForm, 'AttendingConfirm');
+
+      desktopRsvpForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
         try {
-          await submitRsvpData(data);
+          await submitRsvpData(extractDesktopFormData());
           desktopRsvpForm.reset();
           alert('Thank you! Your response has been recorded.');
         } catch (error) {
@@ -1281,34 +1589,65 @@
       });
     }
 
-    rsvpFab.addEventListener('click', () => {
-      rsvpFab.classList.remove('pulse');
-      openRsvp();
-    });
-    rsvpClose.addEventListener('click', closeRsvp);
-    rsvpModal.addEventListener('click', (e) => {
-      if (e.target === rsvpModal) closeRsvp();
-    });
+    /**
+     * The pulse is only meant to attract attention before the visitor starts
+     * reading deeper content. Once they move past the opening section, the cue
+     * quiets down until they return near the top.
+     */
+    function updateRsvpFabPulse() {
+      const { rsvpFab, howSection } = elements;
 
-    // Pulse RSVP button while user is above the "How We Met" section.
-    // Re-enable the pulse when scrolling back to the top.
-    if (rsvpFab) {
-      const howSection = document.getElementById('how');
-      const updatePulse = () => {
-        if (!howSection) {
-          rsvpFab.classList.toggle('pulse', window.scrollY <= 0);
-          return;
-        }
-        const rect = howSection.getBoundingClientRect();
-        rsvpFab.classList.toggle('pulse', rect.top > 20);
-      };
-      updatePulse();
-      window.addEventListener('scroll', updatePulse, { passive: true });
+      if (!rsvpFab) {
+        return;
+      }
+
+      if (!howSection) {
+        rsvpFab.classList.toggle('pulse', window.scrollY <= 0);
+        return;
+      }
+
+      const howSectionRect = howSection.getBoundingClientRect();
+      rsvpFab.classList.toggle('pulse', howSectionRect.top > 20);
     }
+
+    function initializeRsvpControls() {
+      const { rsvpFab, rsvpClose, rsvpModal } = elements;
+
+      if (rsvpFab) {
+        rsvpFab.addEventListener('click', () => {
+          rsvpFab.classList.remove('pulse');
+          openRsvpModal();
+        });
+      }
+
+      if (rsvpClose) {
+        rsvpClose.addEventListener('click', closeRsvpModal);
+      }
+
+      if (rsvpModal) {
+        rsvpModal.addEventListener('click', (event) => {
+          if (event.target === rsvpModal) {
+            closeRsvpModal();
+          }
+        });
+      }
+
+      updateRsvpFabPulse();
+      window.addEventListener('scroll', updateRsvpFabPulse, { passive: true });
+    }
+
+    initializeSplashScreen();
+    initializeSplashPlaybackFallback();
+    initializeNavigation();
+    initializeHeroParallax();
+    initializeDesktopRsvpForm();
+    initializeRsvpControls();
   </script>
 
 </body>
 </html>
+
+
 
 
 
